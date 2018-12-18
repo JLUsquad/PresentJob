@@ -13,13 +13,13 @@ class BooStructure(object):
         self.atoms=self.structure['numbers']
     def getBooStructure(self):
         
-        strcVecs=Structure(self.lattice,self.positions,self.elements,self.atoms).getStructure()
+        bondsDics=Structure(self.lattice,self.positions,self.elements,self.atoms).getStructure()
         
         
-        keys=strcVecs.keys()
+        keys=bondsDics.keys()
         booStructure={}
         for key in keys:
-            vecs=strcVecs[key]
+            vecs=bondsDics[key]
             boos=[]
             # print(vecs)
             # print('-----------')
