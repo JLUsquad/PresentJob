@@ -1,14 +1,21 @@
 from read import Read
 import numpy as np 
+from latticeExpand import latticeExpand
 class Structure(object):
-    def __init__(self,filePath,fileType=None):
-        self.filePath=filePath
-        self.fileType=fileType
-        self.structure = Read(self.filePath,self.fileType).getStructure()
-        self.lattice=self.structure['lattice']
-        self.positions = self.structure['positions']
-        self.elements=self.structure['elements']
-        self.atoms=self.structure['numbers']
+    def __init__(self,lattice,positions,elements,atomNums):
+        self.lattice=lattice
+        self.positions = positions
+        self.elements= elements
+        self.atoms=atomNums
+        
+    # def __init__(self,filePath,fileType=None):
+    #     self.filePath=filePath
+    #     self.fileType=fileType
+    #     self.structure = Read(self.filePath,self.fileType).getStructure()
+    #     self.lattice=self.structure['lattice']
+    #     self.positions = self.structure['positions']
+    #     self.elements=self.structure['elements']
+    #     self.atoms=self.structure['numbers']
         
         
     def getStructure(self):
@@ -24,45 +31,43 @@ class Structure(object):
                 structure[atomName]=self.getBonds(self.positions[atomNumInAll-1],self.positions,self.lattice)
         return structure
     def getBonds(self,atomPos,allPos,lattice):
-        index=[-1,0,1]
-        lattices=[]
-        for i in range(3):
-            for j in range(3):
-                for k in range(3):
-                    for l in range(3):
-                        latticeO=lattice
-                        latticeO[l][0]+=index[i]
-                        latticeO[l][1]+=index[j]
-                        latticeO[l][2]+=index[k]
-                        lattices.append(latticeO)
+        
+        lattices=latticeExpand(self.lattice)
+        # print(lattices.shape)
         atomPos=np.dot(np.array(atomPos),lattice)
         allposlist=[np.dot(allPos,lattices[i]) for i in range(len(lattices))]
         allPos=np.stack(allposlist)
         shape=allPos.shape
         allPos=allPos.reshape(shape[0]*shape[1],shape[2])
+        # print(type(allPos))
+        # print('-----------------')
         minLength=None
         allLength=np.array([])
         bonds=[]
         for pos in allPos:
             
             length=np.linalg.norm(pos-atomPos)
+            # print(length)
             allLength=np.append(allLength,length)
             if length > 0:
-                if minLength==None:
-                    minLength=length
-                    #print(1)
-
-                elif length < minLength:
-                    minLength=length
-                    #print(2)
-        for i in range(0,len(allLength)):
-            if allLength[i] == minLength :
-                
+                if minLength==None :
+                    if length > 0.1:
+                        # A bond should be longer than 0.1 A
+                        minLength=length
                     
-                bonds.append(np.dot(allPos[i],lattice)-pos)
+                
+                if length < minLength:
+                    if length > 0.1:
+                        minLength=length
+                    
+        for i in range(0,len(allLength)):
+            if (allLength[i] - minLength )<0.0001:
+                bond = allPos[i]-atomPos
+                if  np.linalg.norm(bond) > 0.1:   
+                    bonds.append(bond)
                 
         #print(len(allLength))
         #print(len(bonds))
         return np.stack(bonds)
-s=Structure('/home/william/workspace/boo/1-ICSD-108.cif').getStructure()
-print(s)
+# s=Structure('/home/william/workspace/boo/1-ICSD-108.cif').getStructure()
+# print(s['Te1+1'].shape)
