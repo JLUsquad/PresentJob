@@ -1,6 +1,5 @@
 '''
-turn a vec into boo vec.
-Make sure that you have pyshtools installed(pip install pyshtools)
+turn a vec into boo vec
 
 '''
 #Author:William Song
