@@ -1,4 +1,7 @@
-'''Cell Expanding and Getting Final Atom Positions'''
+'''Cell Expanding and Getting Final Atom Positions
+the getPos takes the fractional positions(nx3 array) of all atoms and the lattice of the cell 
+and return all positions of atoms in a 3x3 super cell.   
+'''
 #Author:William Song
 
 import numpy as np 

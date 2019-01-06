@@ -39,15 +39,14 @@ class Structure(object):
         atomPos=np.dot(np.array(atomPos),lattice)
         
         allPos=getPos.getPos(allPos,lattice)
-        # print(type(allPos))
-        # print('-----------------')
+        
         minLength=None
         allLength=np.array([])
         bonds=[]
         for pos in allPos:
             
             length=np.linalg.norm(pos-atomPos)
-            # print(length)
+           
             allLength=np.append(allLength,length)
             if length > 0:
                 if minLength==None :
@@ -65,9 +64,5 @@ class Structure(object):
                 bond = allPos[i]-atomPos
                 if  np.linalg.norm(bond) > 0.1:   
                     bonds.append(bond)
-                
-        #print(len(allLength))
-        #print(len(bonds))
+         
         return np.stack(bonds)
-# s=Structure('/home/william/workspace/boo/1-ICSD-108.cif').getStructure()
-# print(s['Te1+1'].shape)

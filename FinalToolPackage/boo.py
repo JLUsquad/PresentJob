@@ -1,5 +1,6 @@
 '''
-turn a vec into boo vec
+turn a vec into boo vec.
+make sure you have install pyshtools (which is quite easy with 'sudo pip install pyshtools')
 
 '''
 #Author:William Song
@@ -22,14 +23,11 @@ class Boo(object):
 
     def turnIntoSphere(self):
         normalvec=np.array([0,0,1])
-        # if self.vec ==None :
-        #     vec3d=self.pos-self.origin
-        # elif self.vec !=None :
+        #normalvec is normal vection
         vec3d = np.array(self.vec) 
-        # else:
-        #     raise ValueError('wrong parameter')
+       
         r=np.linalg.norm(vec3d)
-        #print(vec3d)
+       
         cosTheta=np.dot(vec3d,normalvec)/r/1.0
         theta=math.acos(cosTheta)
         vec2d=vec3d[:2]
@@ -38,6 +36,7 @@ class Boo(object):
         if mod != 0:
             cosPhi=vec2d[0]/mod
             phi=math.acos(cosPhi)
+        #if the subvector in the x-y plane the phi will be 0.
         
         return (r,theta,phi)
 
@@ -47,11 +46,14 @@ class Boo(object):
         qSeries=np.array([])
         for l in ySeries:
             pSeries=pyshtools.shtools.PlmSchmidt(lmax=l,z=math.cos(theta))
+            #pSeries is a set of values with specific l and cos theta.
             ql=0
             for m in range(-l,l+1):
                 index=int(l*(l+1)/2+m)
+                #index is the location of schmidt legendre with specific m. 
                 plm=pSeries[index]
                 yModule=(-1)**abs(m)*math.sqrt(step(l-abs(m))*(2*l+1)/step(l+abs(m))/4/math.pi)*plm
+                #yModule is the module of spherical fuction with given l, m and cos theta.
                 if m>=0:
                     Ylm=complex(yModule*math.cos(m*phi),yModule*math.sin(m*phi))
                 else:

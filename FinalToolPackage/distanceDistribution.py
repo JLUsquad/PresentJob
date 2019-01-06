@@ -1,4 +1,7 @@
-'''Distance Distribution Class of A Cif File'''
+'''Distance Distribution Class of A Cif File.
+the class inits with a path of a cif file.
+the getStructure method return a dic with all atoms (which iare the keys) and the 3d vecs from each atom to their neighboring ones. 
+'''
 #Author:William Song
 
 from read import Read

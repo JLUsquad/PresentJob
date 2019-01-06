@@ -1,4 +1,7 @@
-'''the boo class of a cif file'''
+'''the boo class of a cif file.
+this class inits with a path of a cif file.
+the getBoostructure return a dic for which the keys are the names of atoms the values are the boo repersentations of relevant atom.  
+'''
 #Author:William Song
 from read import Read
 from boo import Boo
@@ -19,6 +22,7 @@ class BooStructure(object):
         
         
         keys=bondsDics.keys()
+        #the keys are the atoms.
         booStructure={}
         for key in keys:
             vecs=bondsDics[key]

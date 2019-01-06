@@ -1,4 +1,4 @@
-'''an example of using booStructure'''
+'''an example of using distanceDistribution'''
 #Author:William Song
 from distanceDistribution import distanceDistribution
 import numpy as np
